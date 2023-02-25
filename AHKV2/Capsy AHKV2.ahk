@@ -360,13 +360,13 @@ capslock & `::
     ; activate/deactivate command mode
     if (NumMode = "True"){
 		NumMode := "False"
-        ToolTip "Number Mode NumMode!"
+        ToolTip "Number Mode OFF!"
 		sleep 1000
 		ToolTip
 	}
 	else{
 		NumMode := "True"
-        ToolTip "Number Mode NumMode!"
+        ToolTip "Number Mode ON!"
 		sleep 1000
 		ToolTip
 	}
