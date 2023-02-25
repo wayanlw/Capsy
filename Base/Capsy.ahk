@@ -19,7 +19,9 @@ SetBatchLines -1
 ;-----------initializing autoexecution variables. Should be defined before the first hotkey
 ;Variables should eith be defined in autoexecution section or within a function
 ; starting up Command Mode for jk
-commandMode=False
+commandMode=False ; when active window management functionality is active. Toggle with Capslock + F11
+NumMode=False ; when active number pad is active in the normal keyboard area. Toggle with Capslock + `
+
 
 ;window management function task bar height
 taskbar_height:=35
@@ -498,6 +500,21 @@ return
 ; ------------------------------- Number keys ------------------------------
 
 ; Capslock & `:: SendInput --------------
+capslock & `::
+	; activate/deactivate command mode
+    if (%NumMode% = True){
+		NumMode = False
+        ToolTip ,Number Mode %NumMode%!
+		sleep 1000
+		ToolTip
+	}
+	else{
+		NumMode = True
+        ToolTip ,Number Mode %NumMode%!
+		sleep 1000
+		ToolTip
+	}
+return
 Capslock & 1:: SendInput {AppsKey}
 Capslock & 2:: SendInput {F2}
 Capslock & 3:: =
@@ -741,6 +758,28 @@ return
 +^!BS:: SendInput {BS}
 +^!Enter:: SendInput {Enter}
 +^!h:: SendInput {=}
+
+#if (%NumMode%=True) ; if command mode is on activate the commands
+Space:: SendInput {Numpad0}
+m:: SendInput {Numpad1}
+,:: SendInput {Numpad2}
+.:: SendInput {Numpad3}
+j:: SendInput {Numpad4}
+k:: SendInput {Numpad5}
+l:: SendInput {Numpad6}
+u:: SendInput {Numpad7}
+i:: SendInput {Numpad8}
+o:: SendInput {Numpad9}
+p:: SendInput {*}
+[:: SendInput {/}
+':: SendInput {-}
+SC027:: SendInput {+}
+/:: SendInput {Enter}
+n:: SendInput {BS}
+BS:: SendInput {BS}
+Enter:: SendInput {Enter}
+h:: SendInput {=}
+#if
 
 ; ------------------------------- Numberpad keys --------------------------------
 Capslock & Numpad8:: SendInput {Blind}{Up}

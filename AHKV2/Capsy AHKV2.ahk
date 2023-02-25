@@ -18,14 +18,17 @@ Capslock & LButton::click 2
         return
     }
 
-    ; ------------------------------------------------------------------------------
-    ;                                Mouse Area
-    ; ------------------------------------------------------------------------------
-    CoordMode("Mouse", "Screen")
+; ------------------------------------------------------------------------------
+;                                Mouse Area
+; ------------------------------------------------------------------------------
 
-    #UseHook ; without this the mouse movement will not work
-    MouseDelay := "0"
-    Increment := "1"
+NumMode:="False" ; when active number pad is active in the normal keyboard area. Toggle with Capslock + `
+
+CoordMode("Mouse", "Screen")
+
+#UseHook ; without this the mouse movement will not work
+MouseDelay := "0"
+Increment := "1"
 e::
 d::
 s::
@@ -84,7 +87,7 @@ space::
         return
 
     }
-    ; ---------------------------- scroll up and down ------------------------------
+; ---------------------------- scroll up and down ------------------------------
 w::
     {
         While GetKeyState("w", "P")
@@ -180,7 +183,7 @@ Capslock & Enter::
         return
     }
 
-    #Hotif
+#Hotif
 
 ; ------------------------------------------------------------------------------
 ;                                   Main Keys
@@ -350,7 +353,26 @@ Capslock & F1:: Send "{AppsKey}"
 ; capslock & F11::
 
 ; ------------------------------- Number keys ------------------------------
-; Capslock & `:: Send --------------
+; Capslock & `:: Activates the Number mode.
+capslock & `::
+{
+	global NumMode
+    ; activate/deactivate command mode
+    if (NumMode = "True"){
+		NumMode := "False"
+        ToolTip "Number Mode OFF!"
+		sleep 1000
+		ToolTip
+	}
+	else{
+		NumMode := "True"
+        ToolTip "Number Mode ON!"
+		sleep 1000
+		ToolTip
+	}
+return
+}
+
 Capslock & 1:: Send "{AppsKey}"
 Capslock & 2:: Send "{F2}"
 Capslock & 3:: =
@@ -472,30 +494,76 @@ Capslock & ]:: ; Sourround in {}
         return
     }
 
-    ; ------------------------------- Numberpad keys --------------------------------
-    Capslock & Numpad8:: Send "{Blind}{Up}"
-    Capslock & Numpad4:: Send "{Blind}{Left}"
-    Capslock & Numpad5:: Send "{Blind}{Down}"
-    Capslock & Numpad6:: Send "{Blind}{Right}"
 
-    Capslock & NumpadDiv:: Send "{Blind}^{up}"
-    Capslock & Numpad7:: Send "{Blind}^{Left}"
-    Capslock & Numpad2:: Send "{Blind}^{Down}"
-    Capslock & Numpad9:: Send "{Blind}^{Right}"
+; ------------------------------- Num lock keys --------------------------------
++^!Space:: SendInput "{Numpad0}"
++^!m:: SendInput "{Numpad1}"
++^!,:: SendInput "{Numpad2}"
++^!.:: SendInput "{Numpad3}"
++^!j:: SendInput "{Numpad4}"
++^!k:: SendInput "{Numpad5}"
++^!l:: SendInput "{Numpad6}"
++^!u:: SendInput "{Numpad7}"
++^!i:: SendInput "{Numpad8}"
++^!o:: SendInput "{Numpad9}"
++^!p:: SendInput "{*}"
++^![:: SendInput "{/}"
++^!':: SendInput "{-}"
++^!SC027:: SendInput "{+}"
++^!/:: SendInput "{Enter}"
++^!n:: SendInput "{BS}"
++^!BS:: SendInput "{BS}"
++^!Enter:: SendInput "{Enter}"
++^!h:: SendInput "{=}"
 
-    Capslock & Numpad1:: Send "{Blind}{BS}"
-    Capslock & Numpad3:: Send "{Blind}{Del}"
+#HotIf (NumMode = "True") ; if command mode is on activate the commands
+Space:: SendInput "{Numpad0}"
+m:: SendInput "{Numpad1}"
+,:: SendInput "{Numpad2}"
+.:: SendInput "{Numpad3}"
+j:: SendInput "{Numpad4}"
+k:: SendInput "{Numpad5}"
+l:: SendInput "{Numpad6}"
+u:: SendInput "{Numpad7}"
+i:: SendInput "{Numpad8}"
+o:: SendInput "{Numpad9}"
+p:: SendInput "{*}"
+[:: SendInput "{/}"
+':: SendInput "{-}"
+SC027:: SendInput "{+}"
+/:: SendInput "{Enter}"
+n:: SendInput "{BS}"
+BS:: SendInput "{BS}"
+Enter:: SendInput "{Enter}"
+h:: SendInput "{=}"
+#HotIf
 
-    Capslock & Numpad0::Send "{F2}"
 
-    Capslock & NumpadAdd:: Send "{Blind}{=}"
-    Capslock & NumpadEnter:: Send "{Blind}^{Enter}"
 
-    Capslock & NumLock:: Send "{Esc}"
+; ------------------------------- Numberpad keys --------------------------------
+Capslock & Numpad8:: Send "{Blind}{Up}"
+Capslock & Numpad4:: Send "{Blind}{Left}"
+Capslock & Numpad5:: Send "{Blind}{Down}"
+Capslock & Numpad6:: Send "{Blind}{Right}"
 
-    ; ------------------------------------------------------------------------------
-    ;                               Search Functions
-    ; ------------------------------------------------------------------------------
+Capslock & NumpadDiv:: Send "{Blind}^{up}"
+Capslock & Numpad7:: Send "{Blind}^{Left}"
+Capslock & Numpad2:: Send "{Blind}^{Down}"
+Capslock & Numpad9:: Send "{Blind}^{Right}"
+
+Capslock & Numpad1:: Send "{Blind}{BS}"
+Capslock & Numpad3:: Send "{Blind}{Del}"
+
+Capslock & Numpad0::Send "{F2}"
+
+Capslock & NumpadAdd:: Send "{Blind}{=}"
+Capslock & NumpadEnter:: Send "{Blind}^{Enter}"
+
+Capslock & NumLock:: Send "{Esc}"
+
+; ------------------------------------------------------------------------------
+;                               Search Functions
+; ------------------------------------------------------------------------------
 
 #s::
     {
@@ -560,8 +628,9 @@ Capslock & ]:: ; Sourround in {}
     ;                                 Exit or Suspend
     ; ------------------------------------------------------------------------------
 
+
 >^q::
     {
-        MsgBox "Existing Capsy"
+        MsgBox "Exiting Capsy"
         ExitApp
     }
