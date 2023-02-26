@@ -517,16 +517,17 @@ Capslock & ]:: ; Sourround in {}
 +^!h:: SendInput "{=}"
 
 #HotIf (NumMode = "True") ; if command mode is on activate the commands
-Space:: SendInput "{Numpad0}"
-m:: SendInput "{Numpad1}"
-,:: SendInput "{Numpad2}"
-.:: SendInput "{Numpad3}"
-j:: SendInput "{Numpad4}"
-k:: SendInput "{Numpad5}"
-l:: SendInput "{Numpad6}"
-u:: SendInput "{Numpad7}"
-i:: SendInput "{Numpad8}"
-o:: SendInput "{Numpad9}"
+
+Space:: SendInput "{0}"
+m:: SendInput "{1}"
+,:: SendInput "{2}"
+.:: SendInput "{3}"
+j:: SendInput "{4}"
+k:: SendInput "{5}"
+l:: SendInput "{6}"
+u:: SendInput "{7}"
+i:: SendInput "{8}"
+o:: SendInput "{9}"
 p:: SendInput "{*}"
 [:: SendInput "{/}"
 ':: SendInput "{-}"
@@ -536,6 +537,25 @@ n:: SendInput "{BS}"
 BS:: SendInput "{BS}"
 Enter:: SendInput "{Enter}"
 h:: SendInput "{=}"
+
+x:: SendInput "{1}"
+c:: SendInput "{2}"
+v:: SendInput "{3}"
+s:: SendInput "{4}"
+d:: SendInput "{5}"
+f:: SendInput "{6}"
+w:: SendInput "{7}"
+e:: SendInput "{8}"
+r:: SendInput "{9}"
+1:: SendInput "{/}"
+q:: SendInput "{*}"
+z:: SendInput "{-}"
+a:: SendInput "{+}"
+g:: SendInput "{=}"
+
+Capslock & space::SendInput "{space}"
+
+
 #HotIf
 
 
