@@ -245,11 +245,7 @@ Capslock & Tab up::Send "{Blind}{Shift up}"
 ; }
 
 !+q::Send "!{F4}"
-!q::Send "^w"
-
-; using alt+u/o to control+tab and control+shift+tab
-!o::Send "^{Tab}"
-!u::Send "^+{Tab}"
+!+k::WinMinimize "A"
 
 RAlt::RControl
 

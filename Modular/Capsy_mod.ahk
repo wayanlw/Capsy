@@ -154,11 +154,6 @@ Capslock & Tab::SendInput {Blind}{Shift Down}
 Capslock & Tab up::SendInput {Blind}{Shift up}
 
 
-; using alt+u/o to control+tab and control+shift+tab
-!o::SendInput ^{Tab}
-!u::SendInput ^+{Tab}
-
-
 ;; --------------swap Ctrl | Win | Alt keys ----------------------------------
 ;LAlt::LControl
 ;Lwin::LAlt
@@ -170,8 +165,7 @@ RAlt::RControl
 ; --------------------------- Close windows and tab ----------------------------
 
 !+q::SendInput !{F4}
-!q::SendInput ^w
-;!+k::WinMinimize, A
+!+k::WinMinimize, A
 
 ; ---------------------------- windows placement --------------------------- */
 
