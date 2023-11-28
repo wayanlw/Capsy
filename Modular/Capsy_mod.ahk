@@ -567,7 +567,7 @@ return
 +^![:: SendInput {/}
 +^!':: SendInput {-}
 +^!SC027:: SendInput {+}
-+^!/:: SendInput {Enter}
++^!/:: SendInput {.}
 +^!n:: SendInput {BS}
 +^!BS:: SendInput {BS}
 +^!Enter:: SendInput {Enter}
@@ -588,8 +588,8 @@ p:: SendInput {*}
 [:: SendInput {/}
 ':: SendInput {-}
 SC027:: SendInput {+}
-/:: SendInput {Enter}
-n:: SendInput {BS}
+/:: SendInput {.}
+n:: SendInput {,}
 BS:: SendInput {BS}
 Enter:: SendInput {Enter}
 h:: SendInput {=}
@@ -604,8 +604,9 @@ w:: SendInput 7
 e:: SendInput 8
 r:: SendInput 9
 1:: SendInput {/}
-q:: SendInput {*}
-z:: SendInput {-}
+2:: SendInput {*}
+q:: SendInput {-}
+z:: SendInput {.}
 a:: SendInput {+}
 g:: SendInput {=}
 

@@ -733,6 +733,7 @@ Capslock & ]::  ; Sourround in {}
     }
 return
 
+
 ; ------------------------------- Num lock keys --------------------------------
 +^!Space:: SendInput {Numpad0}
 +^!m:: SendInput {Numpad1}
@@ -748,8 +749,8 @@ return
 +^![:: SendInput {/}
 +^!':: SendInput {-}
 +^!SC027:: SendInput {+}
-+^!/:: SendInput {Enter}
-+^!n:: SendInput {BS}
++^!/:: SendInput {.}
++^!n:: SendInput {,}
 +^!BS:: SendInput {BS}
 +^!Enter:: SendInput {Enter}
 +^!h:: SendInput {=}
@@ -769,8 +770,8 @@ p:: SendInput {*}
 [:: SendInput {/}
 ':: SendInput {-}
 SC027:: SendInput {+}
-/:: SendInput {Enter}
-n:: SendInput {BS}
+/:: SendInput {.}
+n:: SendInput {,}
 BS:: SendInput {BS}
 Enter:: SendInput {Enter}
 h:: SendInput {=}
@@ -785,9 +786,10 @@ w:: SendInput 7
 e:: SendInput 8
 r:: SendInput 9
 1:: SendInput {/}
-q:: SendInput {*}
-z:: SendInput {-}
+2:: SendInput {*}
+q:: SendInput {-}
 a:: SendInput {+}
+z:: SendInput {.}
 g:: SendInput {=}
 
 Capslock & space::SendInput {space}
