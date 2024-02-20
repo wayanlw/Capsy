@@ -592,7 +592,7 @@ Capslock & NumLock:: Send "{Esc}"
         else
         {
             ; run C:\Program Files (x86)\Google\Chrome\Application\chrome.exe http://www.google.com/search?q=%Search%&num=100&source=lnms&filter=0
-            run "http://www.google.com/search?q=" Search.value "&num=100&source=lnms&filter=0"
+            run "https://www.google.com/search?q=" Search.value "&num=100&source=lnms&filter=0"
         }
         return
     }
@@ -604,7 +604,7 @@ Capslock & NumLock:: Send "{Esc}"
         Send "^c" ;copies selected text
         ClipWait 1
         ; Run C:\Program Files (x86)\Google\Chrome\Application\chrome.exe http://www.google.com/search?q=%Clipboard%&num=100&source=lnms&filter=0
-        Run "http://www.google.com/search?q=" A_Clipboard "&num=100&source=lnms&filter=0"
+        Run "https://www.google.com/search?q=" A_Clipboard "&num=100&source=lnms&filter=0"
         Sleep 500
         A_Clipboard:= OldClipboard
         OldClipboard:= ""

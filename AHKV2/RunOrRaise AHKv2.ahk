@@ -2,13 +2,12 @@
 
 
 prog_1:="C:\Program Files\Microsoft Office\root\Office16\EXCEL.EXE"
-prog_2:="C:\Scoop\apps\freecommander\current\FreeCommander.exe"
-prog_3:="C:\Program Files (x86)\SAP\FrontEnd\SapGui\saplogon.exe"
-prog_4:="C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE"
-prog_5:="C:\Program Files (x86)\Teams Installer\Teams.exe"
+prog_2:="C:\Users\auwwaya\scoop\apps\freecommander\current\FreeCommander.exe"
+prog_3:="C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE"
+prog_4:="C:\Users\auwwaya\AppData\Local\Microsoft\WindowsApps\ms-teams.exe"
+prog_5:="C:\Program Files (x86)\SAP\FrontEnd\SapGui\saplogon.exe"
 prog_6:="C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-prog_7:="C:\Scoop\apps\keepassxc\current\KeePassXC.exe"
-
+prog_7:="C:\Users\auwwaya\scoop\apps\keepassxc\current\KeePassXC.exe"
 
 ; ------------------------------------------------------------------------------
 ;                               Run or Raise
@@ -19,7 +18,7 @@ prog_7:="C:\Scoop\apps\keepassxc\current\KeePassXC.exe"
 #3::OpenOrShowAppBasedOnExeName(prog_3)
 #4::OpenOrShowAppBasedOnExeName(prog_4)
 #5::OpenOrShowAppBasedOnExeName(prog_5)
-#+f::OpenOrShowAppBasedOnExeName(prog_6)
++!f::OpenOrShowAppBasedOnExeName(prog_6)
 ^!k::OpenOrShowAppBasedOnExeName(prog_7)
 
 OpenOrShowAppBasedOnExeName(AppAddress)

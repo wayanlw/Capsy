@@ -771,7 +771,7 @@ return
     if not ErrorLevel ; when cancel is not pressed
     {
         ; run C:\Program Files (x86)\Google\Chrome\Application\chrome.exe http://www.google.com/search?q=%Search%&num=100&source=lnms&filter=0
-        run http://www.google.com/search?q=%Search%&num=100&source=lnms&filter=0
+        run https://www.google.com/search?q=%Search%&num=100&source=lnms&filter=0
     }
 return
 
@@ -783,7 +783,7 @@ return
     SendInput, ^c ;copies selected text
     ClipWait, 1
     ; Run C:\Program Files (x86)\Google\Chrome\Application\chrome.exe http://www.google.com/search?q=%Clipboard%&num=100&source=lnms&filter=0
-    Run http://www.google.com/search?q=%Clipboard%&num=100&source=lnms&filter=0
+    Run https://www.google.com/search?q=%Clipboard%&num=100&source=lnms&filter=0
     Sleep 500
     Clipboard:= OldClipboard
     OldClipboard:=""
