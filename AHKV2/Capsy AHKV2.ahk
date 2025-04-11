@@ -190,7 +190,7 @@ Capslock & Enter::
 ; ------------------------------------------------------------------------------
 
 Capslock & q::Send "{Esc}"
-Capslock & w::Send "^a"
+; Capslock & w::Send "^a"
 Capslock & e::Send "^z" ; This has repetitive press. Sould be a comfortable place.
 Capslock & r::Send "^y"
 ; Capslock & t:: Send "^{Left}+^{Right}"
@@ -577,6 +577,43 @@ Capslock & NumpadAdd:: Send "{Blind}{=}"
 Capslock & NumpadEnter:: Send "{Blind}^{Enter}"
 
 Capslock & NumLock:: Send "{Esc}"
+
+; --------------------------------------------------------------
+;                              Launcher (v2, corrected)
+; --------------------------------------------------------------
+CapsLock & w::
+{
+    ih := InputHook("L2 T2")   ; max 2 chars, 2‑second timeout
+    ih.Start()                 ; begin collecting keystrokes
+    ih.Wait()                  ; wait until finished
+    Key := StrLower(ih.Input)  ; what the user typed, in lowercase
+
+    Switch Key
+    {
+        ; ---------- Delete ----------
+        Case "fa": Send "^a{Delete}"                      ; all
+        Case "fs": Send "+{Home}+{Home}{Delete}"          ; to start
+        Case "fe": Send "+{End}+{End}{Delete}"            ; to end
+
+        ; ---------- Copy ------------
+        Case "da": Send "^a^c"
+        Case "ds": Send "+{Home}+{Home}^c"
+        Case "de": Send "+{End}+{End}^c"
+
+        ; ---------- Cut -------------
+        Case "va": Send "^a^x"
+        Case "vw": Send "^{Right}+^{Left}^x"
+        Case "vv": Send "{Home}{Home}+{End}+{End}^x"
+        Case "vs": Send "+{Home}+{Home}^x"
+        Case "ve": Send "+{End}+{End}^x"
+
+        ; ---------- Select ----------
+        Case "sa": Send "^a"
+        Case "ss": Send "+{Home}+{Home}"
+        Case "se": Send "+{End}+{End}"
+    }
+    Return
+}
 
 ; ------------------------------------------------------------------------------
 ;                               Search Functions
