@@ -26,10 +26,8 @@ NumMode=False ; when active number pad is active in the normal keyboard area. To
 taskbar_height:=35
 
 ; ---------------------------Extra mouse button mapping ---------------------
-; this is commented because the this functionality is implmented with xmousebuttonControl
 XButton2::Send {Enter}
 XButton1::Send {Delete}
-
 Capslock & LButton::click,2
 
 /* ------------------------------- Excel area -------------------------------
@@ -187,7 +185,6 @@ ww_PlaceWindow(x_pos,y_pos,width,height){
 !+2::ww_PlaceWindow(A_ScreenWidth,2,A_ScreenWidth-4, A_ScreenHeight)
 !+e::ww_PlaceWindow(2,2,A_ScreenWidth/2-4, A_ScreenHeight)
 !+r::ww_PlaceWindow(A_ScreenWidth/2+2,2,A_ScreenWidth/2-4, A_ScreenHeight)
-#if
 
 
 ; !+a::wp_WinPreviouslyActive(A_ScreenWidth/2,A_ScreenHeight)
@@ -195,7 +192,7 @@ ww_PlaceWindow(x_pos,y_pos,width,height){
 !+a::altertab(A_ScreenWidth/2,A_ScreenHeight)
 !+d::altertab(A_ScreenWidth,A_ScreenHeight)
 
-
+#if
 
 wp_WinPreviouslyActive(width,height)
 {
