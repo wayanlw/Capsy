@@ -4,11 +4,513 @@
 
 #SingleInstance Force
 #WinActivateForce
+#Warn LocalSameAsGlobal, Off  ; Suppress warnings for function calls in hotkeys
 A_MaxHotkeysPerInterval := 99000000
 A_HotkeyInterval := 60000
 SendMode("Input")
 SetCapsLockState("AlwaysOff")
 CoordMode("Mouse", "Screen")
+
+;; ============================================================================
+;;                    Window Management - Complete Implementation
+;; ============================================================================
+
+TileWindows() {
+    ; Get current window and work area
+    try {
+        CurrWin := WinGetID("A")
+    } catch {
+        return  ; No active window, exit silently
+    }
+    
+    MonitorGetWorkArea(MonitorGetPrimary(), &L, &T, &R, &B)
+    W := (R - L) // 2
+    H := B - T
+    
+    ; Get all windows and find next valid one
+    Windows := WinGetList()
+    NextWin := 0
+    Found := false
+    
+    ; Find next visible, non-minimized window after current
+    for ID in Windows {
+        if (Found && WinGetTitle("ahk_id " . ID) != "" && !(WinGetMinMax("ahk_id " . ID) == -1)) {
+            NextWin := ID
+            break
+        }
+        if (ID == CurrWin) {
+            Found := true
+        }
+    }
+    
+    ; If no window found after current, take first valid window
+    if (!NextWin) {
+        for ID in Windows {
+            if (ID != CurrWin && WinGetTitle("ahk_id " . ID) != "" && !(WinGetMinMax("ahk_id " . ID) == -1)) {
+                NextWin := ID
+                break
+            }
+        }
+    }
+    
+    ; Tile windows
+    if (NextWin) {
+        ; Both windows: Next left, Current right
+        if (WinGetMinMax("ahk_id " . NextWin) == 1) {
+            WinRestore("ahk_id " . NextWin)
+        }
+        if (WinGetMinMax("ahk_id " . CurrWin) == 1) {
+            WinRestore("ahk_id " . CurrWin)
+        }
+        WinMove(L, T, W, H, "ahk_id " . NextWin)
+        WinMove(L + W, T, W, H, "ahk_id " . CurrWin)
+        WinActivate("ahk_id " . NextWin)  ; Activate previous window instead
+    } else {
+        ; Single window: Current right
+        if (WinGetMinMax("ahk_id " . CurrWin) == 1) {
+            WinRestore("ahk_id " . CurrWin)
+        }
+        WinMove(L + W, T, W, H, "ahk_id " . CurrWin)
+    }
+}
+
+MaximizeWindow() {
+    WinMaximize("A")
+}
+
+MaximizeToMonitor1() {
+    try {
+        CurrWin := WinGetID("A")
+    } catch {
+        return  ; No active window, exit silently
+    }
+    
+    MonitorGetWorkArea(1, &L, &T, &R, &B)
+    W := R - L
+    H := B - T
+    
+    if (WinGetMinMax("ahk_id " . CurrWin) == 1) {
+        WinRestore("ahk_id " . CurrWin)
+    }
+    WinMove(L, T, W, H, "ahk_id " . CurrWin)
+}
+
+MaximizeToMonitor2() {
+    ; Check if Monitor 2 exists
+    if (MonitorGetCount() < 2) {
+        ToolTip("Monitor 2 not found!")
+        SetTimer(() => ToolTip(), -2000)
+        return
+    }
+    
+    try {
+        CurrWin := WinGetID("A")
+    } catch {
+        return  ; No active window, exit silently
+    }
+    
+    MonitorGetWorkArea(2, &L, &T, &R, &B)
+    W := R - L
+    H := B - T
+    
+    if (WinGetMinMax("ahk_id " . CurrWin) == 1) {
+        WinRestore("ahk_id " . CurrWin)
+    }
+    WinMove(L, T, W, H, "ahk_id " . CurrWin)
+}
+
+MaximizeToMonitor3() {
+    ; Check if Monitor 3 exists
+    if (MonitorGetCount() < 3) {
+        ToolTip("Monitor 3 not found!")
+        SetTimer(() => ToolTip(), -2000)
+        return
+    }
+    
+    try {
+        CurrWin := WinGetID("A")
+    } catch {
+        return  ; No active window, exit silently
+    }
+    
+    MonitorGetWorkArea(3, &L, &T, &R, &B)
+    W := R - L
+    H := B - T
+    
+    if (WinGetMinMax("ahk_id " . CurrWin) == 1) {
+        WinRestore("ahk_id " . CurrWin)
+    }
+    WinMove(L, T, W, H, "ahk_id " . CurrWin)
+}
+
+TileLeftMonitor2() {
+    ; Check if Monitor 2 exists
+    if (MonitorGetCount() < 2) {
+        ToolTip("Monitor 2 not found!")
+        SetTimer(() => ToolTip(), -2000)
+        return
+    }
+    
+    try {
+        CurrWin := WinGetID("A")
+    } catch {
+        return  ; No active window, exit silently
+    }
+    
+    MonitorGetWorkArea(2, &L, &T, &R, &B)
+    W := (R - L) // 2
+    H := B - T
+    
+    if (WinGetMinMax("ahk_id " . CurrWin) == 1) {
+        WinRestore("ahk_id " . CurrWin)
+    }
+    WinMove(L, T, W, H, "ahk_id " . CurrWin)
+}
+
+TileRightMonitor2() {
+    ; Check if Monitor 2 exists
+    if (MonitorGetCount() < 2) {
+        ToolTip("Monitor 2 not found!")
+        SetTimer(() => ToolTip(), -2000)
+        return
+    }
+    
+    try {
+        CurrWin := WinGetID("A")
+    } catch {
+        return  ; No active window, exit silently
+    }
+    
+    MonitorGetWorkArea(2, &L, &T, &R, &B)
+    W := (R - L) // 2
+    H := B - T
+    
+    if (WinGetMinMax("ahk_id " . CurrWin) == 1) {
+        WinRestore("ahk_id " . CurrWin)
+    }
+    WinMove(L + W, T, W, H, "ahk_id " . CurrWin)
+}
+
+SwapWindows() {
+    try {
+        CurrWin := WinGetID("A")
+    } catch {
+        return  ; No active window, exit silently
+    }
+    
+    ; Find previous window in Alt+Tab order (same logic as TileWindows)
+    Windows := WinGetList()
+    PrevWin := 0
+    Found := false
+    
+    ; Find next window after current in Z-order
+    for ID in Windows {
+        if (Found && WinGetTitle("ahk_id " . ID) != "" && !(WinGetMinMax("ahk_id " . ID) == -1)) {
+            PrevWin := ID
+            break
+        }
+        if (ID == CurrWin) {
+            Found := true
+        }
+    }
+    
+    ; If no window found after current, take first valid window
+    if (!PrevWin) {
+        for ID in Windows {
+            if (ID != CurrWin && WinGetTitle("ahk_id " . ID) != "" && !(WinGetMinMax("ahk_id " . ID) == -1)) {
+                PrevWin := ID
+                break
+            }
+        }
+    }
+    
+    ; Swap positions and sizes if previous window exists
+    if (PrevWin) {
+        ; Get current positions and sizes
+        WinGetPos(&CurrX, &CurrY, &CurrW, &CurrH, "ahk_id " . CurrWin)
+        WinGetPos(&PrevX, &PrevY, &PrevW, &PrevH, "ahk_id " . PrevWin)
+        
+        ; Restore windows if maximized
+        if (WinGetMinMax("ahk_id " . CurrWin) == 1) {
+            WinRestore("ahk_id " . CurrWin)
+        }
+        if (WinGetMinMax("ahk_id " . PrevWin) == 1) {
+            WinRestore("ahk_id " . PrevWin)
+        }
+        
+        ; Simple swap - previous window moves to current position, current moves to previous position
+        WinMove(CurrX, CurrY, CurrW, CurrH, "ahk_id " . PrevWin)
+        WinMove(PrevX, PrevY, PrevW, PrevH, "ahk_id " . CurrWin)
+        
+        ; Make previous window active
+        WinActivate("ahk_id " . PrevWin)
+    }
+}
+
+TileLeft() {
+    try {
+        CurrWin := WinGetID("A")
+    } catch {
+        return  ; No active window, exit silently
+    }
+    
+    MonitorGetWorkArea(MonitorGetPrimary(), &L, &T, &R, &B)
+    W := (R - L) // 2
+    H := B - T
+    
+    if (WinGetMinMax("ahk_id " . CurrWin) == 1) {
+        WinRestore("ahk_id " . CurrWin)
+    }
+    WinMove(L, T, W, H, "ahk_id " . CurrWin)
+}
+
+TileRight() {
+    try {
+        CurrWin := WinGetID("A")
+    } catch {
+        return  ; No active window, exit silently
+    }
+    
+    MonitorGetWorkArea(MonitorGetPrimary(), &L, &T, &R, &B)
+    W := (R - L) // 2
+    H := B - T
+    
+    if (WinGetMinMax("ahk_id " . CurrWin) == 1) {
+        WinRestore("ahk_id " . CurrWin)
+    }
+    WinMove(L + W, T, W, H, "ahk_id " . CurrWin)
+}
+
+Tile2to1() {
+    ; Get current window and work area
+    try {
+        CurrWin := WinGetID("A")
+    } catch {
+        return  ; No active window, exit silently
+    }
+    
+    MonitorGetWorkArea(MonitorGetPrimary(), &L, &T, &R, &B)
+    TotalW := R - L
+    H := B - T
+    LeftW := (TotalW * 2) // 3    ; 2/3 width
+    RightW := TotalW - LeftW      ; 1/3 width (remaining space)
+    
+    ; Find next window (same logic as TileWindows)
+    Windows := WinGetList()
+    NextWin := 0
+    Found := false
+    
+    for ID in Windows {
+        if (Found && WinGetTitle("ahk_id " . ID) != "" && !(WinGetMinMax("ahk_id " . ID) == -1)) {
+            NextWin := ID
+            break
+        }
+        if (ID == CurrWin) {
+            Found := true
+        }
+    }
+    
+    if (!NextWin) {
+        for ID in Windows {
+            if (ID != CurrWin && WinGetTitle("ahk_id " . ID) != "" && !(WinGetMinMax("ahk_id " . ID) == -1)) {
+                NextWin := ID
+                break
+            }
+        }
+    }
+    
+    ; Tile windows
+    if (NextWin) {
+        ; Previous window 2/3 left, Current window 1/3 right
+        if (WinGetMinMax("ahk_id " . NextWin) == 1) {
+            WinRestore("ahk_id " . NextWin)
+        }
+        if (WinGetMinMax("ahk_id " . CurrWin) == 1) {
+            WinRestore("ahk_id " . CurrWin)
+        }
+        WinMove(L, T, LeftW, H, "ahk_id " . NextWin)
+        WinMove(L + LeftW, T, RightW, H, "ahk_id " . CurrWin)
+        WinActivate("ahk_id " . NextWin)  ; Activate previous window
+    } else {
+        ; Single window: Current takes 1/3 right
+        if (WinGetMinMax("ahk_id " . CurrWin) == 1) {
+            WinRestore("ahk_id " . CurrWin)
+        }
+        WinMove(L + LeftW, T, RightW, H, "ahk_id " . CurrWin)
+    }
+}
+
+MaximizeAllWindows() {
+    Windows := WinGetList()
+    
+    for ID in Windows {
+        ; Skip windows without titles or minimized windows
+        if (WinGetTitle("ahk_id " . ID) != "" && !(WinGetMinMax("ahk_id " . ID) == -1)) {
+            ; Get which monitor this window is primarily on
+            WinGetPos(&WinX, &WinY, &WinWidth, &WinHeight, "ahk_id " . ID)
+            WinCenterX := WinX + (WinWidth // 2)
+            WinCenterY := WinY + (WinHeight // 2)
+            
+            ; Find which monitor contains the center of this window
+            MonitorCount := MonitorGetCount()
+            TargetMonitor := 1  ; Default to monitor 1
+            
+            Loop MonitorCount {
+                MonitorGet(A_Index, &MonLeft, &MonTop, &MonRight, &MonBottom)
+                if (WinCenterX >= MonLeft && WinCenterX <= MonRight && 
+                    WinCenterY >= MonTop && WinCenterY <= MonBottom) {
+                    TargetMonitor := A_Index
+                    break
+                }
+            }
+            
+            ; Get work area of the target monitor and resize window
+            MonitorGetWorkArea(TargetMonitor, &L, &T, &R, &B)
+            W := R - L
+            H := B - T
+            
+            ; Restore if maximized, then resize to full work area
+            if (WinGetMinMax("ahk_id " . ID) == 1) {
+                WinRestore("ahk_id " . ID)
+            }
+            WinMove(L, T, W, H, "ahk_id " . ID)
+        }
+    }
+}
+
+TileDualMonitors() {
+    ; Check if Monitor 2 exists
+    if (MonitorGetCount() < 2) {
+        ToolTip("Monitor 2 not found!")
+        SetTimer(() => ToolTip(), -2000)
+        return
+    }
+    
+    ; Get current window
+    try {
+        CurrWin := WinGetID("A")
+    } catch {
+        return  ; No active window, exit silently
+    }
+    
+    ; Get work areas for both monitors
+    MonitorGetWorkArea(1, &L1, &T1, &R1, &B1)
+    MonitorGetWorkArea(2, &L2, &T2, &R2, &B2)
+    W1 := R1 - L1
+    H1 := B1 - T1
+    W2 := R2 - L2
+    H2 := B2 - T2
+    
+    ; Find previous window in Alt+Tab order (same logic as TileWindows)
+    Windows := WinGetList()
+    PrevWin := 0
+    Found := false
+    
+    for ID in Windows {
+        if (Found && WinGetTitle("ahk_id " . ID) != "" && !(WinGetMinMax("ahk_id " . ID) == -1)) {
+            PrevWin := ID
+            break
+        }
+        if (ID == CurrWin) {
+            Found := true
+        }
+    }
+    
+    if (!PrevWin) {
+        for ID in Windows {
+            if (ID != CurrWin && WinGetTitle("ahk_id " . ID) != "" && !(WinGetMinMax("ahk_id " . ID) == -1)) {
+                PrevWin := ID
+                break
+            }
+        }
+    }
+    
+    ; Tile windows to different monitors
+    if (PrevWin) {
+        ; Current window to Monitor 2, Previous window to Monitor 1 (primary)
+        if (WinGetMinMax("ahk_id " . CurrWin) == 1) {
+            WinRestore("ahk_id " . CurrWin)
+        }
+        if (WinGetMinMax("ahk_id " . PrevWin) == 1) {
+            WinRestore("ahk_id " . PrevWin)
+        }
+        WinMove(L2, T2, W2, H2, "ahk_id " . CurrWin)
+        WinMove(L1, T1, W1, H1, "ahk_id " . PrevWin)
+        WinActivate("ahk_id " . PrevWin)  ; Activate previous window
+    } else {
+        ; Single window: Current to Monitor 2
+        if (WinGetMinMax("ahk_id " . CurrWin) == 1) {
+            WinRestore("ahk_id " . CurrWin)
+        }
+        WinMove(L2, T2, W2, H2, "ahk_id " . CurrWin)
+    }
+}
+
+MoveToNextMonitor() {
+    try {
+        CurrWin := WinGetID("A")
+    } catch {
+        return  ; No active window, exit silently
+    }
+    
+    ; Check if we have multiple monitors
+    MonitorCount := MonitorGetCount()
+    if (MonitorCount < 2) {
+        return  ; Only one monitor, nothing to do
+    }
+    
+    ; Get current window position to determine which monitor it's on
+    WinGetPos(&WinX, &WinY, &WinWidth, &WinHeight, "ahk_id " . CurrWin)
+    WinCenterX := WinX + (WinWidth // 2)
+    WinCenterY := WinY + (WinHeight // 2)
+    
+    ; Find which monitor contains the center of this window
+    CurrentMonitor := 1  ; Default to monitor 1
+    
+    Loop MonitorCount {
+        MonitorGet(A_Index, &MonLeft, &MonTop, &MonRight, &MonBottom)
+        if (WinCenterX >= MonLeft && WinCenterX <= MonRight && 
+            WinCenterY >= MonTop && WinCenterY <= MonBottom) {
+            CurrentMonitor := A_Index
+            break
+        }
+    }
+    
+    ; Calculate next monitor (cycle back to 1 if at the last monitor)
+    NextMonitor := (CurrentMonitor == MonitorCount) ? 1 : CurrentMonitor + 1
+    
+    ; Get work areas for current and next monitor
+    MonitorGetWorkArea(CurrentMonitor, &CurrL, &CurrT, &CurrR, &CurrB)
+    MonitorGetWorkArea(NextMonitor, &NextL, &NextT, &NextR, &NextB)
+    
+    ; Calculate relative position within current monitor
+    RelativeX := WinX - CurrL
+    RelativeY := WinY - CurrT
+    
+    ; Calculate new position on next monitor (same relative position)
+    NewX := NextL + RelativeX
+    NewY := NextT + RelativeY
+    
+    ; Ensure window doesn't go outside next monitor bounds
+    NextW := NextR - NextL
+    NextH := NextB - NextT
+    
+    if (NewX + WinWidth > NextR) {
+        NewX := NextR - WinWidth
+    }
+    if (NewY + WinHeight > NextB) {
+        NewY := NextB - WinHeight
+    }
+    if (NewX < NextL) {
+        NewX := NextL
+    }
+    if (NewY < NextT) {
+        NewY := NextT
+    }
+    
+    ; Move window to next monitor (same size, new position)
+    WinMove(NewX, NewY, WinWidth, WinHeight, "ahk_id " . CurrWin)
+}
 
 ;; ============================================================================
 ;;                               Configuration
@@ -260,7 +762,7 @@ class SearchManager {
             result := InputBox("Enter search term:", StrTitle(engine) . " Search")
             if (result.Result = "Cancel")
                 return
-            searchQuery := result.Text
+            searchQuery := result.Value  ; Changed from .Text to .Value
         } else {
             searchQuery := query
         }
@@ -302,31 +804,6 @@ class ClipboardManager {
     static targetWindow := ""
     static targetTitle := ""
     
-    static GatherText() {
-        oldClip := ClipboardAll()
-        A_Clipboard := ""
-        Send("^c")
-        
-        if (!ClipWait(1)) {
-            ToolTip("No text selected!")
-            SetTimer(() => ToolTip(), -2000)
-            return
-        }
-        
-        ; Try to find existing notepad window
-        if (WinExist("*Untitled - Notepad")) {
-            ControlSetText(A_Clipboard . "`r`n`r`n", "Edit1", "*Untitled - Notepad")
-        } else {
-            ; Create new notepad window
-            Run("notepad.exe")
-            if (WinWait("Untitled - Notepad", , 3)) {
-                ControlSetText(A_Clipboard . "`r`n`r`n", "Edit1", "Untitled - Notepad")
-            }
-        }
-        
-        A_Clipboard := oldClip
-    }
-    
     static CopyToTaggedWindow() {
         if (!this.targetWindow) {
             ToolTip("No target window tagged! Use Ctrl+Win+Shift+Z to tag a window.")
@@ -334,17 +811,25 @@ class ClipboardManager {
             return
         }
         
-        text := SearchManager.GetSelectedText()
-        if (!text) {
+        ; Get selected text directly
+        oldClip := ClipboardAll()
+        A_Clipboard := ""
+        Send("^c")
+        
+        if (!ClipWait(1)) {
             ToolTip("No text selected!")
             SetTimer(() => ToolTip(), -2000)
+            A_Clipboard := oldClip
             return
         }
+        
+        textToCopy := A_Clipboard
         
         if (!WinExist(this.targetTitle)) {
             ToolTip("Tagged window no longer exists!")
             SetTimer(() => ToolTip(), -3000)
             this.ResetTarget()
+            A_Clipboard := oldClip
             return
         }
         
@@ -355,6 +840,8 @@ class ClipboardManager {
             Send("^v`r`r")
             WinActivate(currentWin)
         }
+        
+        A_Clipboard := oldClip
     }
     
     static TagWindow() {
@@ -444,26 +931,6 @@ class HotkeyHandler {
                 Send("^+s")
             }
         }
-    }
-    
-    ; Smart find operations
-    static HandleFindAction() {
-        result := KeyWait("x", "T" . Config.LongPressDuration/1000)
-        
-        if (!result) {
-            ; Long press - find selected text
-            selectedText := SearchManager.GetSelectedText()
-            if (selectedText) {
-                Send("^f")
-                Send("^v")
-                Sleep(500)
-                Send("{Enter}")
-            }
-        } else {
-            ; Short press - open find dialog
-            Send("^f")
-        }
-        KeyWait("x")
     }
 }
 
@@ -560,63 +1027,6 @@ class NumberMode {
 }
 
 ;; ============================================================================
-;;                              Mouse Utilities
-;; ============================================================================
-
-class MouseUtils {
-    static dragData := Map()
-    
-    static StartWindowDrag() {
-        MouseGetPos(&startX, &startY, &winId)
-        WinGetPos(&winX, &winY, , , winId)
-        
-        ; Only drag if window is not maximized
-        winState := WinGetMinMax(winId)
-        if (winState != 0)
-            return
-            
-        this.dragData := Map(
-            "startX", startX,
-            "startY", startY,
-            "winId", winId,
-            "originalX", winX,
-            "originalY", winY
-        )
-        
-        SetTimer((*) => this.UpdateWindowDrag(), 10)
-    }
-    
-    static UpdateWindowDrag() {
-        ; Check if button is still held
-        if (!GetKeyState("RButton", "P")) {
-            SetTimer((*) => this.UpdateWindowDrag(), 0)
-            return
-        }
-        
-        ; Check for escape
-        if (GetKeyState("Escape", "P")) {
-            SetTimer((*) => this.UpdateWindowDrag(), 0)
-            WinMove(this.dragData["originalX"], this.dragData["originalY"], , , this.dragData["winId"])
-            return
-        }
-        
-        ; Update window position
-        MouseGetPos(&currentX, &currentY)
-        WinGetPos(&winX, &winY, , , this.dragData["winId"])
-        
-        newX := winX + currentX - this.dragData["startX"]
-        newY := winY + currentY - this.dragData["startY"]
-        
-        WinMove(newX, newY, , , this.dragData["winId"])
-        WinActivate(this.dragData["winId"])
-        
-        ; Update start position for next iteration
-        this.dragData["startX"] := currentX
-        this.dragData["startY"] := currentY
-    }
-}
-
-;; ============================================================================
 ;;                              Initialize
 ;; ============================================================================
 
@@ -664,7 +1074,7 @@ CapsLock & l::Send("{Blind}{Right}")
 CapsLock & SC027::Send("{Blind}^{Right}")
 
 CapsLock & z::AltTab
-CapsLock & x::HotkeyHandler.HandleFindAction()
+CapsLock & x::Send("^f")
 CapsLock & c::Send("{Enter}")
 CapsLock & v::Send("{Delete}")
 CapsLock & b::Send("{Blind}{BS}")
@@ -755,15 +1165,20 @@ CapsLock & Enter::{
 }
 #HotIf
 
-; ------------------ Command Mode Window Management ------------------
-#HotIf ModeManager.IsActive("command")
-!+1::WindowManager.MaximizeToMonitor(1)
-!+2::WindowManager.MaximizeToMonitor(2)
-!+e::WindowManager.SplitVertical(true)
-!+r::WindowManager.SplitVertical(false)
-!+a::WindowManager.AlterTab(A_ScreenWidth//2, A_ScreenHeight)
-!+d::WindowManager.AlterTab(A_ScreenWidth, A_ScreenHeight)
-#HotIf
+; ------------------ Window Management Hotkeys ------------------
+!+a::TileWindows()
+!+1::MaximizeToMonitor1()
+!+2::MaximizeToMonitor2()
+!+3::MaximizeToMonitor3()
+!+4::TileLeftMonitor2()
+!+5::TileRightMonitor2()
+!+s::SwapWindows()
+!+e::TileLeft()
+!+r::TileRight()
+!+t::Tile2to1()
+!+d::TileDualMonitors()
+!+z::MoveToNextMonitor()
+!+x::MaximizeAllWindows()
 
 ; ------------------ Number Mode ------------------
 #HotIf ModeManager.IsActive("number")
@@ -819,11 +1234,7 @@ CapsLock & Space::Send("{Space}")
 ; ------------------ Alt Key Remapping ------------------
 RAlt::RControl
 
-; ------------------ Mouse Window Dragging ------------------
-CapsLock & RButton::MouseUtils.StartWindowDrag()
-
 ; ------------------ Clipboard Functions ------------------
-^!c::ClipboardManager.GatherText()
 +!c::ClipboardManager.CopyToTaggedWindow()
 ^#+z::ClipboardManager.TagWindow()
 ^#+r::ClipboardManager.ResetTarget()
